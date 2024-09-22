@@ -33,8 +33,8 @@ EXTENSIONS=(
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
-    "https://huggingface.co/gangfuckkkkk/Startup/blob/main/autismmixSDXL_autismmixConfetti.safetensors"
-    "https://huggingface.co/gangfuckkkkk/Startup/blob/main/hassakuXLHentai_v13.safetensors"
+    "https://huggingface.co/gangfuckkkkk/Startup/resolve/main/autismmixSDXL_autismmixConfetti.safetensors"
+    "https://huggingface.co/gangfuckkkkk/Startup/resolve/main/hassakuXLHentai_v13.safetensors"
 )
 
 LORA_MODELS=(
