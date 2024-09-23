@@ -27,7 +27,7 @@ EXTENSIONS=(
    "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
    "https://github.com/ArtVentureX/sd-webui-agent-scheduler"
    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
-   "https://github.com/alemelis/sd-webui-ar"
+   "https://github.com/dfksmasher/sd-webui-ar"
    "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
    
 )
