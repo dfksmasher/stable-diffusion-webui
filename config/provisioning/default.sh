@@ -20,14 +20,14 @@ PIP_PACKAGES=(
 )
 
 EXTENSIONS=(
-    "https://github.com/Mikubill/sd-webui-controlnet"
-    "https://github.com/deforum-art/sd-webui-deforum"
-    "https://github.com/adieyal/sd-dynamic-prompts"
-    "https://github.com/ototadana/sd-face-editor"
-    "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
-    "https://github.com/hako-mikan/sd-webui-regional-prompter"
-    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
-    "https://github.com/Gourieff/sd-webui-reactor"
+   #"https://github.com/Mikubill/sd-webui-controlnet"
+   #"https://github.com/deforum-art/sd-webui-deforum"
+   #"https://github.com/adieyal/sd-dynamic-prompts"
+   #"https://github.com/ototadana/sd-face-editor"
+   #"https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
+   #"https://github.com/hako-mikan/sd-webui-regional-prompter"
+   #"https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
+   #"https://github.com/Gourieff/sd-webui-reactor"
 )
 
 CHECKPOINT_MODELS=(
