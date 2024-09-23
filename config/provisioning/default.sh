@@ -20,19 +20,19 @@ PIP_PACKAGES=(
 )
 
 EXTENSIONS=(
-   #"https://github.com/Mikubill/sd-webui-controlnet"
-   #"https://github.com/deforum-art/sd-webui-deforum"
-   #"https://github.com/adieyal/sd-dynamic-prompts"
-   #"https://github.com/ototadana/sd-face-editor"
-   #"https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
-   #"https://github.com/hako-mikan/sd-webui-regional-prompter"
-   #"https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
-   #"https://github.com/Gourieff/sd-webui-reactor"
+   "https://github.com/Mikubill/sd-webui-controlnet"
+   "https://github.com/DominikDoom/a1111-sd-webui-tagcomplete"
+   "https://github.com/adieyal/sd-dynamic-prompts"
+   "https://github.com/pkuliyi2015/multidiffusion-upscaler-for-automatic1111"
+   "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
+   "https://github.com/ArtVentureX/sd-webui-agent-scheduler"
+   "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
+   "https://github.com/alemelis/sd-webui-ar"
+   "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
+   
 )
 
 CHECKPOINT_MODELS=(
-    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     "https://huggingface.co/gangfuckkkkk/Startup/resolve/main/autismmixSDXL_autismmixConfetti.safetensors"
     "https://huggingface.co/gangfuckkkkk/Startup/resolve/main/hassakuXLHentai_v13.safetensors"
 )
