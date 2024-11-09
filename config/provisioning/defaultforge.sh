@@ -10,11 +10,12 @@
 DISK_GB_REQUIRED=30
 
 APT_PACKAGES=(
-    # Add any additional APT packages if needed
+    "jq"
 )
 
 PIP_PACKAGES=(
-    # Add any additional PIP packages if needed
+    "peft"
+    "insightface"
 )
 
 EXTENSIONS=(
@@ -52,7 +53,7 @@ CONTROLNET_MODELS=(
 function provisioning_start() {
     # Ensure Python 3.10 is installed and set as default
     sudo apt-get update
-    sudo apt-get install -y python3.10 python3.10-venv python3.10-dev
+    sudo apt-get install -y python3.10 python3.10-venv python3.10-dev "${APT_PACKAGES[@]}"
     sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 2
     sudo update-alternatives --set python3 /usr/bin/python3.10
 
@@ -69,11 +70,6 @@ function provisioning_start() {
     # Clone the reForge repository (dev_upstream branch)
     git clone --branch dev_upstream https://github.com/Panchovix/stable-diffusion-webui-reForge.git /opt/stable-diffusion-webui
 
-    # Alternatively, you can use:
-    # git clone https://github.com/Panchovix/stable-diffusion-webui-reForge.git /opt/stable-diffusion-webui
-    # cd /opt/stable-diffusion-webui
-    # git checkout dev_upstream
-
     DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_ALLOCATED=$(($DISK_GB_AVAILABLE + $DISK_GB_USED))
@@ -87,6 +83,17 @@ function provisioning_start() {
     if [[ -f requirements_versions.txt ]]; then
         pip_install -r requirements_versions.txt
     fi
+
+    # Install additional packages
+    pip_install "${PIP_PACKAGES[@]}"
+
+    # Add 'dat_enabled_models' to config.json
+    CONFIG_FILE="/opt/stable-diffusion-webui/config.json"
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo '{}' > "$CONFIG_FILE"
+    fi
+    # Update config.json using jq
+    jq '.dat_enabled_models = []' "$CONFIG_FILE" > tmp.$$.json && mv tmp.$$.json "$CONFIG_FILE"
 
     provisioning_get_extensions
     provisioning_get_models \
