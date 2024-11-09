@@ -28,12 +28,10 @@ EXTENSIONS=(
 )
 
 CHECKPOINT_MODELS=(
-    #"https://huggingface.co/gangfuckkkkk/Startup/resolve/main/autismmixSDXL_autismmixConfetti.safetensors"
-    #"https://huggingface.co/gangfuckkkkk/Startup/resolve/main/hassakuXLHentai_v13.safetensors"
     "https://huggingface.co/John6666/obsession-illustriousxl-v20-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|illustriousxl-personal-merge-v30noob10based-sdxl.safetensors"
 )
 
-# ... Rest of your arrays ...
+# Other arrays (LORA_MODELS, VAE_MODELS, etc.)...
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -105,23 +103,43 @@ function provisioning_get_models() {
     fi
 
     printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
-    for url in "${arr[@]}"; do
+    for entry in "${arr[@]}"; do
+        if [[ "$entry" == *"|"* ]]; then
+            IFS='|' read -r url filename <<< "$entry"
+        else
+            url="$entry"
+            filename=""
+        fi
         printf "Downloading: %s\n" "${url}"
-        provisioning_download "${url}" "${dir}" || echo "Failed to download ${url}"
+        provisioning_download "${url}" "${dir}" "${filename}" || echo "Failed to download ${url}"
         printf "\n"
     done
 }
 
 function provisioning_download() {
-    if [[ -n $HF_TOKEN && $1 =~ ^https://([a-zA-Z0-9_-]+\.)?huggingface\.co(/|$|\?) ]]; then
+    local url="$1"
+    local dir="$2"
+    local filename="$3"
+    local dotbytes="${4:-4M}"
+
+    if [[ -n $HF_TOKEN && $url =~ ^https://([a-zA-Z0-9_-]+\.)?huggingface\.co(/|$|\?) ]]; then
         auth_token="$HF_TOKEN"
-    elif [[ -n $CIVITAI_TOKEN && $1 =~ ^https://([a-zA-Z0-9_-]+\.)?civitai\.com(/|$|\?) ]]; then
+    elif [[ -n $CIVITAI_TOKEN && $url =~ ^https://([a-zA-Z0-9_-]+\.)?civitai\.com(/|$|\?) ]]; then
         auth_token="$CIVITAI_TOKEN"
     fi
+
     if [[ -n $auth_token ]]; then
-        wget --header="Authorization: Bearer $auth_token" --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" || echo "Failed to download $1"
+        if [[ -n "$filename" ]]; then
+            wget --header="Authorization: Bearer $auth_token" --content-disposition --show-progress -e dotbytes="$dotbytes" -O "$dir/$filename" "$url" || echo "Failed to download $url"
+        else
+            wget --header="Authorization: Bearer $auth_token" --content-disposition --show-progress -e dotbytes="$dotbytes" -P "$dir" "$url" || echo "Failed to download $url"
+        fi
     else
-        wget --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" || echo "Failed to download $1"
+        if [[ -n "$filename" ]]; then
+            wget --content-disposition --show-progress -e dotbytes="$dotbytes" -O "$dir/$filename" "$url" || echo "Failed to download $url"
+        else
+            wget --content-disposition --show-progress -e dotbytes="$dotbytes" -P "$dir" "$url" || echo "Failed to download $url"
+        fi
     fi
 }
 
