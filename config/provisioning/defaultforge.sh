@@ -6,7 +6,13 @@
 
 ### Edit the following arrays to suit your workflow - values must be quoted and separated by newlines or spaces.
 ### If you specify gated models you'll need to set environment variables HF_TOKEN and/or CIVITAI_TOKEN
-
+EXTENSIONS=(
+   "https://github.com/DominikDoom/a1111-sd-webui-tagcomplete"
+   "https://github.com/ArtVentureX/sd-webui-agent-scheduler"
+   "https://github.com/dfksmasher/sd-webui-ar"
+   "https://github.com/dfksmasher/sd-dynamic-prompts"
+   "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"  
+)
 # [Your arrays: DISK_GB_REQUIRED, APT_PACKAGES, PIP_PACKAGES, EXTENSIONS, CHECKPOINT_MODELS, etc.]
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
