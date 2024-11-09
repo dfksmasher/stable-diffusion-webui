@@ -30,7 +30,7 @@ EXTENSIONS=(
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/gangfuckkkkk/Startup/resolve/main/autismmixSDXL_autismmixConfetti.safetensors"
     #"https://huggingface.co/gangfuckkkkk/Startup/resolve/main/hassakuXLHentai_v13.safetensors"
-    "https://huggingface.co/John6666/obsession-illustriousxl-v20-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors"
+    "https://huggingface.co/John6666/obsession-illustriousxl-v20-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|illustriousxl-personal-merge-v30noob10based-sdxl.safetensors"
 )
 
 # ... Rest of your arrays ...
