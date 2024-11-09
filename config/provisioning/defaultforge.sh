@@ -29,7 +29,8 @@ EXTENSIONS=(
 
 CHECKPOINT_MODELS=(
     "https://huggingface.co/John6666/obsession-illustriousxl-v20-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|illustriousxl-personal-merge-v30noob10based-sdxl.safetensors"
-)
+	"https://huggingface.co/John6666/noobai-xl-nai-xl-vpredtestversion-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|noobai-xl-nai-xl-vpredtestversion-sdxl.safetensors"
+	"https://huggingface.co/Laxhar/noob_sdxl_v_pred/resolve/main/vpred-model/Vpred-checkpoint-e0_s5000.safetensors")
 
 # Other arrays (LORA_MODELS, VAE_MODELS, etc.)...
 
