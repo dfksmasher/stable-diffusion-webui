@@ -2,7 +2,12 @@
 # This file will be sourced in init.sh
 # Namespace functions with provisioning_
 
-# ... [Keep the initial comments and variables as in your original script] ...
+# https://raw.githubusercontent.com/ai-dock/stable-diffusion-webui/main/config/provisioning/default.sh
+
+### Edit the following arrays to suit your workflow - values must be quoted and separated by newlines or spaces.
+### If you specify gated models you'll need to set environment variables HF_TOKEN and/or CIVITAI_TOKEN
+
+# [Your arrays: DISK_GB_REQUIRED, APT_PACKAGES, PIP_PACKAGES, EXTENSIONS, CHECKPOINT_MODELS, etc.]
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -11,7 +16,7 @@ function provisioning_start() {
     sudo apt-get update
     sudo apt-get install -y python3.10 python3.10-venv python3.10-dev
     sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 2
-    sudo update-alternatives --config python3 <<< '2'
+    sudo update-alternatives --set python3 /usr/bin/python3.10
 
     # We need to apply some workarounds to make old builds work with the new default
     if [[ ! -d /opt/environments/python ]]; then 
@@ -42,21 +47,21 @@ function provisioning_start() {
 
     provisioning_get_extensions
     provisioning_get_models \
-        "${WORKSPACE}/stable-diffusion-webui/models/Stable-diffusion" \
+        "/opt/stable-diffusion-webui/models/Stable-diffusion" \
         "${CHECKPOINT_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/stable-diffusion-webui/models/lora" \
+        "/opt/stable-diffusion-webui/models/lora" \
         "${LORA_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/stable-diffusion-webui/models/ControlNet" \
+        "/opt/stable-diffusion-webui/models/ControlNet" \
         "${CONTROLNET_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/stable-diffusion-webui/models/VAE" \
+        "/opt/stable-diffusion-webui/models/VAE" \
         "${VAE_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/stable-diffusion-webui/models/esrgan" \
+        "/opt/stable-diffusion-webui/models/ESRGAN" \
         "${ESRGAN_MODELS[@]}"
-     
+
     PLATFORM_ARGS=""
     if [[ $XPU_TARGET = "CPU" ]]; then
         PLATFORM_ARGS="--use-cpu all --skip-torch-cuda-test --no-half"
@@ -80,12 +85,13 @@ function provisioning_start() {
 
 function pip_install() {
     if [[ -z $MAMBA_BASE ]]; then
-        python3.10 -m pip install --no-cache-dir "$@"
+        "$WEBUI_VENV_PIP" install --no-cache-dir "$@"
     else
         micromamba run -n webui pip install --no-cache-dir "$@"
     fi
 }
 
-# ... [Keep the rest of your functions as in your original script] ...
+# Add the missing functions here
+# [Include provisioning_get_apt_packages, provisioning_get_extensions, provisioning_get_models, provisioning_download, and any other necessary functions]
 
 provisioning_start
