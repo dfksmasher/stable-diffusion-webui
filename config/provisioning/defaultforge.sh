@@ -28,9 +28,9 @@ EXTENSIONS=(
 )
 
 CHECKPOINT_MODELS=(
-    "https://civitai.com/api/download/models/1022833"
-    "https://civitai.com/api/download/models/1023901"
-    "https://civitai.com/api/download/models/962003"
+    #"https://huggingface.co/gangfuckkkkk/Startup/resolve/main/autismmixSDXL_autismmixConfetti.safetensors"
+    #"https://huggingface.co/gangfuckkkkk/Startup/resolve/main/hassakuXLHentai_v13.safetensors"
+    "https://huggingface.co/John6666/obsession-illustriousxl-v20-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors"
 )
 
 # ... Rest of your arrays ...
