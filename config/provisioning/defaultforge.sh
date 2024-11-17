@@ -28,7 +28,8 @@ EXTENSIONS=(
 )
 
 CHECKPOINT_MODELS=(
-    "https://huggingface.co/John6666/noobai-xl-nai-xl-vpredtestversion-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|noobai-xl-nai-xl-vpredtestversion-sdxl.safetensors"
+   #"https://huggingface.co/John6666/noobai-xl-nai-xl-vpredtestversion-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|noobai-xl-nai-xl-vpredtestversion-sdxl.safetensors"
+    "https://huggingface.co/Laxhar/noobai-XL-Vpred-0.5/resolve/main/noobai-xl-vpred-v0.5.safetensors|noobai-xl-vpred-v0.5.safetensors"
 )
 
 function provisioning_start() {
