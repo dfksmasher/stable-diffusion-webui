@@ -28,13 +28,8 @@ EXTENSIONS=(
 )
 
 CHECKPOINT_MODELS=(
-    	#"https://huggingface.co/John6666/obsession-illustriousxl-v20-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|illustriousxl-personal-merge-v30noob10based-sdxl.safetensors"
-	"https://huggingface.co/John6666/noobai-xl-nai-xl-vpredtestversion-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|noobai-xl-nai-xl-vpredtestversion-sdxl.safetensors"
-	#"https://huggingface.co/Laxhar/noob_sdxl_v_pred/resolve/main/vpred-model/Vpred-checkpoint-e0_s5000.safetensors"
-	#"https://huggingface.co/Laxhar/noobai-XL-Vpred-0.5/resolve/main/noobai-xl-vpred-v0.5.safetensors"
-# Other arrays (LORA_MODELS, VAE_MODELS, etc.)...
-
-### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
+    "https://huggingface.co/John6666/noobai-xl-nai-xl-vpredtestversion-sdxl/resolve/main/unet/diffusion_pytorch_model.safetensors|noobai-xl-nai-xl-vpredtestversion-sdxl.safetensors"
+)
 
 function provisioning_start() {
     # Ensure Python 3.10 is installed and set as default
@@ -59,12 +54,13 @@ function provisioning_start() {
     DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_ALLOCATED=$(($DISK_GB_AVAILABLE + $DISK_GB_USED))
+
     provisioning_print_header
     provisioning_get_apt_packages
     provisioning_get_pip_packages
 
     # Install requirements for reForge
-    cd /opt/stable-diffusion-webui
+    cd /opt/stable-diffusion-webui || { echo "Failed to navigate to /opt/stable-diffusion-webui"; exit 1; }
     pip_install -r requirements.txt
     if [[ -f requirements_versions.txt ]]; then
         pip_install -r requirements_versions.txt
@@ -78,20 +74,58 @@ function provisioning_start() {
     if [ ! -f "$CONFIG_FILE" ]; then
         echo '{}' > "$CONFIG_FILE"
     fi
-    # Update config.json using jq
     jq '.dat_enabled_models = []' "$CONFIG_FILE" > tmp.$$.json && mv tmp.$$.json "$CONFIG_FILE"
 
     provisioning_get_extensions
     provisioning_get_models \
         "/opt/stable-diffusion-webui/models/Stable-diffusion" \
         "${CHECKPOINT_MODELS[@]}"
-    # ... Rest of your provisioning_get_models calls ...
+}
 
-    # ... Rest of your function ...
+function provisioning_print_header() {
+    echo "##########################################################"
+    echo "# Starting Provisioning for stable-diffusion-webui      #"
+    echo "##########################################################"
+    echo "Disk Space Allocated: $DISK_GB_ALLOCATED GB, Required: $DISK_GB_REQUIRED GB"
+    if [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]]; then
+        echo "WARNING: Disk space allocation is below the required threshold!"
+    fi
+}
+
+function provisioning_get_apt_packages() {
+    echo "Installing APT packages: ${APT_PACKAGES[*]}"
+    sudo apt-get install -y "${APT_PACKAGES[@]}"
+}
+
+function provisioning_get_pip_packages() {
+    echo "Installing Python packages: ${PIP_PACKAGES[*]}"
+    pip_install "${PIP_PACKAGES[@]}"
+}
+
+function pip_install() {
+    "$WEBUI_VENV_PIP" install --no-cache-dir "$@"
+}
+
+function provisioning_get_extensions() {
+    echo "Installing Extensions..."
+    for repo in "${EXTENSIONS[@]}"; do
+        dir="${repo##*/}"
+        path="/opt/stable-diffusion-webui/extensions/${dir}"
+        if [[ -d $path ]]; then
+            echo "Updating extension: ${repo}"
+            (cd "$path" && git pull)
+        else
+            echo "Cloning extension: ${repo}"
+            git clone "${repo}" "$path"
+        fi
+    done
 }
 
 function provisioning_get_models() {
-    if [[ -z $2 ]]; then return 1; fi
+    if [[ -z $2 ]]; then
+        echo "No models specified for downloading."
+        return 1
+    fi
     dir="$1"
     mkdir -p "$dir"
     chmod a+w "$dir"
@@ -99,11 +133,11 @@ function provisioning_get_models() {
     if [[ $DISK_GB_ALLOCATED -ge $DISK_GB_REQUIRED ]]; then
         arr=("$@")
     else
-        printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
+        echo "WARNING: Low disk space allocation - Only the first model will be downloaded!"
         arr=("$1")
     fi
 
-    printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
+    echo "Downloading ${#arr[@]} model(s) to $dir..."
     for entry in "${arr[@]}"; do
         if [[ "$entry" == *"|"* ]]; then
             IFS='|' read -r url filename <<< "$entry"
@@ -111,9 +145,8 @@ function provisioning_get_models() {
             url="$entry"
             filename=""
         fi
-        printf "Downloading: %s\n" "${url}"
+        echo "Downloading: ${url}"
         provisioning_download "${url}" "${dir}" "${filename}" || echo "Failed to download ${url}"
-        printf "\n"
     done
 }
 
@@ -122,6 +155,8 @@ function provisioning_download() {
     local dir="$2"
     local filename="$3"
     local dotbytes="${4:-4M}"
+
+    mkdir -p "$dir" || { echo "Failed to create directory $dir"; return 1; }
 
     if [[ -n $HF_TOKEN && $url =~ ^https://([a-zA-Z0-9_-]+\.)?huggingface\.co(/|$|\?) ]]; then
         auth_token="$HF_TOKEN"
@@ -143,7 +178,5 @@ function provisioning_download() {
         fi
     fi
 }
-
-# ... Rest of your functions ...
 
 provisioning_start
