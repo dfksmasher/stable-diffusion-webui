@@ -54,7 +54,7 @@ function provisioning_start() {
     rm -rf /opt/stable-diffusion-webui
 
     # Clone the reForge repository (dev_upstream branch)
-    git clone --branch main https://github.com/Panchovix/stable-diffusion-webui-reForge.git /opt/stable-diffusion-webui
+    git clone --branch dev https://github.com/Panchovix/stable-diffusion-webui-reForge.git /opt/stable-diffusion-webui
 
     DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
