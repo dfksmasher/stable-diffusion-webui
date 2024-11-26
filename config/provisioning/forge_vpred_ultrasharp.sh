@@ -25,6 +25,7 @@ EXTENSIONS=(
     "https://github.com/dfksmasher/sd-webui-ar"
     "https://github.com/dfksmasher/sd-dynamic-prompts"
     "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser"
+    "https://github.com/AUTOMATIC1111/stable-diffusion-webui-pixelization"    
 )
 
 CHECKPOINT_MODELS=(
